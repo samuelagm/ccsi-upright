@@ -1,0 +1,130 @@
+<div class="ui grid container">
+  <div class="sixteen wide column"></div>
+  <!--  <div class="sixteen wide column"></div> -->
+  <div class="sixteen wide column"></div>
+  <div class="thirteen wide column">
+    <div class="ui right aligned grid">
+      <div class="column">
+        <!-- <sui-select class="floating labeled icon button" icon="filter" [options]="filters" [isSearchable]="false"
+          placeholder="" [(ngModel)]="selected" #filterSelect>
+          <div class="header">
+            <i class="tags icon"></i>
+            Filter by type
+          </div>
+          <sui-select-option *ngFor="let o of filterSelect.filteredOptions" ngModelChange="filterPosts()" [value]="o"></sui-select-option>
+        </sui-select> -->
+      </div>
+
+    </div>
+  </div>
+  <div class="three wide column"></div>
+  <div class="two wide column">
+
+    <div class="ui secondary vertical fluid pointing menu">
+      <a class="active item" routerLink="/board">
+        Post
+      </a>
+      <a class="item" routerLink="/board/post">
+        New Post
+      </a>
+    </div>
+  </div>
+  <div class="twelve wide column">
+
+    <h2 class="ui dividing header">
+      <i class="file alternate green icon"></i>
+      <div class="content">
+        Feeds
+        <!-- <div class="sub header">Manage your preferences</div> -->
+      </div>
+      <br />
+    </h2>
+
+    <table class="ui very basic collapsing celled table">
+      <thead>
+        <tr>
+          <th>Post</th>
+          <th>Content</th>
+          <th>Feature</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let post of posts; index as i; first as isFirst">
+          <td width="22%">
+            <h4 class="ui image header">
+              <img src={{post.image}} class="ui mini rounded image">
+              <div class="content">
+                <ng-container *ngIf="post.author !== undefined; else qwerty">
+                  {{post.author.name}}
+                </ng-container>
+                <ng-template #qwerty>
+                  Anonymous
+                </ng-template>
+
+              </div>
+            </h4>
+          </td>
+          <td>
+            <strong>{{post.title}}</strong>
+            <p>{{post.body}}</p>
+          </td>
+          <td>
+            <div class="ui toggle checkbox">
+              <input #cb1 type="checkbox" [checked]='post.featured' (change)="featurePost(cb1, post.id)">
+              <label>Feature</label>
+            </div>
+          </td>
+          <td>
+            <div class="ui vertical animated button" tabindex="0" (click)="deletePost(post.id)">
+              <div class="hidden content">Delete</div>
+              <div class="visible content">
+                <i class="trash icon"></i>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <!--    <div class="ui items" *ngFor="let post of posts; index as i; first as isFirst">
+      <div class="item">
+        <div class="image">
+          <img src={{post.image}} />
+        </div>
+        <div class="content">
+          <div class="header">
+            <ng-container *ngIf="post.author !== undefined; else qwerty">
+              {{post.author.name}}
+            </ng-container>
+            <ng-template #qwerty>
+              Anonymous
+            </ng-template>
+          </div>
+          <div class="meta">
+            <span class="cinema">
+              posted {{post.createdAt | amTimeAgo}}
+            </span>
+          </div>
+          <div class="description">
+            <p>{{post.body}}</p>
+          </div>
+          <div class="extra">
+            <span class="like">
+              <i class="like icon"></i> {{post.upvotes}} Likes
+            </span>
+            <div class="ui right floated">
+              <div class="ui toggle checkbox">
+                <input #cb1 type="checkbox" [checked]='post.featured' (change)="featurePost(cb1, post.id)">
+                <label>Feature</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+  </div>
+  <div class="three wide column">
+  </div>
+</div>

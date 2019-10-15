@@ -1,0 +1,36 @@
+<div class="ui middle aligned centered grid" style="height: 100%;">
+  <div class="three column row">
+    <div class="column">
+      <form class="ui large form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="ui stacked segment">
+          <h2>Login</h2>
+          <div class="field">
+            <div class="ui right labeled left icon input">
+              <i class="user circle icon"></i>
+              <input type="text" name="email" placeholder="E-mail address" formControlName="email">
+              <div class="ui corner label red" *ngIf="loginForm.get('email').dirty == true && loginForm.get('email').status == 'INVALID'">
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui left icon input">
+              <i class="lock icon"></i>
+              <input type="password" name="password" placeholder="Password" formControlName="password">
+            </div>
+          </div>
+          <button type='submit' class="ui fluid primary button">Login</button>
+        </div>
+
+        <div *ngIf="!loginSuccess" class="ui red inverted segment">
+          <i class="warning icon"></i>
+          Wrong email or password
+        </div>
+
+
+
+      </form>
+
+
+    </div>
+  </div>
+</div>

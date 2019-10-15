@@ -1,0 +1,8 @@
+.dropZone{
+    border-radius: 0;
+    border-color: black;
+    border-style: dashed;
+    border-width: thin;
+    margin-bottom: 10px;
+    text-align: center;
+}

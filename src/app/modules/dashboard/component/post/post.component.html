@@ -1,0 +1,74 @@
+<div class="ui grid container" *ngIf="isOnline == false">
+  <div class="sixteen wide column"></div>
+  <div class="sixteen wide column"></div>
+  <div class="sixteen wide column"></div>
+  <div class="sixteen wide column"></div>
+  <div class="two wide column"></div>
+  <div class="eleven wide column">
+    <h2>
+      You're offline, please check your internet settings.
+    </h2>
+
+  </div>
+  <div class="column"></div>
+</div>
+
+<div class="ui grid container" *ngIf="isOnline == true">
+  <div class="sixteen wide column"></div>
+  <div class="sixteen wide column"></div>
+  <div class="sixteen wide column"></div>
+  <div class="sixteen wide column"></div>
+  <div class="two wide column">
+
+    <div class="ui secondary vertical fluid pointing menu">
+      <a class="item" routerLink="/board">
+        Post
+      </a>
+      <a class="active item" routerLink="/board/post">
+        New Post
+      </a>
+    </div>
+  </div>
+  <div class="eleven wide column">
+
+    <h2 class="ui dividing header">
+      <i class="file alternate green icon"></i>
+      <div class="content">
+        Feeds
+        <!-- <div class="sub header">Manage your preferences</div> -->
+      </div>
+    </h2>
+    <form class="ui large form" [formGroup]="postForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <div class="ui input">
+          <input type="text" formControlName="title" placeholder="title">
+          <div class="ui corner label red" *ngIf="postForm.get('content').dirty == true && postForm.get('title').status == 'INVALID'">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui input">
+          <input type="text" formControlName="links" placeholder="comma seperated list of links">
+        </div>
+      </div>
+      <div class="field">
+        <div class="ui input">
+          <textarea type="text" rows="3" formControlName="content" placeholder="Content"></textarea>
+        </div>
+      </div>
+      <div class="dropZone">
+        <file-drop (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)" (onFileLeave)="fileLeave($event)"
+          customstyle="dropZone">
+          <span>Drop image file here</span>
+        </file-drop>
+        <hr />
+        <img *ngIf="imageBase64 !== null" [src]=sanitizer.bypassSecurityTrustResourceUrl(imageBase64) height="150px"
+          width="auto" />
+      </div>
+      <button type='submit' class="ui fluid primary button">Add</button>
+    </form>
+  </div>
+
+  <div class="column">
+  </div>
+</div>
