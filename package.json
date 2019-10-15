@@ -24,7 +24,7 @@
     "angular2-moment": "^1.9.0",
     "cloudinary-core": "^2.5.0",
     "core-js": "^2.5.4",
-    "jquery": "^3.3.1",
+    "jquery": "^3.4.0",
     "ng-connection-service": "^1.0.4",
     "ng2-semantic-ui": "^0.9.7",
     "ngx-file-drop": "^4.0.6",
