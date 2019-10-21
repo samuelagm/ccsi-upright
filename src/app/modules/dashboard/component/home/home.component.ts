@@ -99,39 +99,4 @@ export class HomeComponent implements OnInit, AfterViewInit {
     );
     this.getStats();
   }
-
-  // deletePost(id) {
-  //   console.log("bing!")
-  //   if (confirm('You\'re about to delete a post, continue ?')) {
-  //     this.postService.deletePost(id).subscribe(data => {
-  //       alert('Post deleted');
-  //       console.log(this.posts);
-  //       this.posts = this.posts.filter((el) => el.id !== id);
-
-  //     });
-  //   }
-  // }
-
-  // loadPosts() {
-  //   this.postService.getPosts().subscribe((data: any) => {
-  //     this.posts = data;
-  //     console.log(data);
-  //   });
-  // }
-
-  // filterPosts() {
-  //   console.log(this.selected);
-  // }
-
-  // featurePost(element: HTMLInputElement, id: string): void {
-  //   if (element.checked) {
-  //     this.postService.updatePosts(id, { featured: true }).subscribe((data: any) => {
-  //       this.loadPosts();
-  //     });
-  //   } else {
-  //     this.postService.updatePosts(id, { featured: false }).subscribe((data: any) => {
-  //       this.loadPosts();
-  //     });
-  //   }
-  // }
 }
