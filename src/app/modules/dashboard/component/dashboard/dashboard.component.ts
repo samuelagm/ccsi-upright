@@ -8,8 +8,10 @@ import { AuthenticationService } from '../../../../services/authentication.servi
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  constructor(private router: Router, private auth: AuthenticationService) { }
+  collapsed: boolean;
+  constructor(private router: Router, private auth: AuthenticationService) {
+    this.collapsed = true;
+  }
 
   ngOnInit() {
   }

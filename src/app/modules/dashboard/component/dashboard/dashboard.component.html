@@ -1,13 +1,40 @@
-<div class="ui top fixed horizontal borderless menu">
-  <div class="item">
-    <img class="ui mini image" src="/logo.png">
-  </div>
-  <a class="item">Features</a>
-  <a class="item">Testimonials</a>
-  <a class="right item"  (click)=logout()>
-    <i class="user circle icon"></i>Log out</a>
-</div>
-<router-outlet></router-outlet>
-<div class="ui black bottom fixed horizontal borderless inverted menu">
-  <div class="center item">&copy; CCSI 2018</div>
-</div>
+<app-dash [nav]="true" [title]="'DASHBOARD'">
+  <router-outlet class="main"></router-outlet>
+  <clr-vertical-nav class="aside" [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapsed">
+    <a clrVerticalNavLink routerLinkActive="active"
+      routerLink="home">
+      <clr-icon clrVerticalNavIcon shape="home"></clr-icon>
+      Home
+    </a>
+    <a clrVerticalNavLink routerLinkActive="active"
+      routerLink="posts">
+      <clr-icon clrVerticalNavIcon shape="keyboard"></clr-icon>
+      Posts
+    </a>
+    <a clrVerticalNavLink routerLinkActive="active"
+      routerLink="products">
+      <clr-icon clrVerticalNavIcon shape="layers"></clr-icon>
+      Products
+    </a>
+    <a clrVerticalNavLink routerLinkActive="active"
+      routerLink="orders">
+      <clr-icon clrVerticalNavIcon shape="shopping-cart"></clr-icon>
+      Orders
+    </a>
+    <a clrVerticalNavLink routerLinkActive="active"
+      routerLink="suggestions">
+      <clr-icon clrVerticalNavIcon shape="volume-down"></clr-icon>
+      Sugggestions
+    </a>
+    <a clrVerticalNavLink routerLinkActive="active"
+      routerLink="testimonials">
+      <clr-icon clrVerticalNavIcon shape="chat-bubble"></clr-icon>
+      Testimonials
+    </a>
+    <!-- <a clrVerticalNavLink routerLinkActive="active"
+      routerLink="users">
+      <clr-icon clrVerticalNavIcon shape="users"></clr-icon>
+      Users
+    </a> -->
+  </clr-vertical-nav>
+</app-dash>

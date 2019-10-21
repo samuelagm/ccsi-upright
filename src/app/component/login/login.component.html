@@ -1,4 +1,4 @@
-<div class="ui middle aligned centered grid" style="height: 100%;">
+<!-- <div class="ui middle aligned centered grid" style="height: 100%;">
   <div class="three column row">
     <div class="column">
       <form class="ui large form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -18,7 +18,7 @@
               <input type="password" name="password" placeholder="Password" formControlName="password">
             </div>
           </div>
-          <button type='submit' class="ui fluid primary button">Login</button>
+          <button type='submit' class="btn btn-primary">Login</button>
         </div>
 
         <div *ngIf="!loginSuccess" class="ui red inverted segment">
@@ -31,6 +31,29 @@
       </form>
 
 
+    </div>
+  </div>
+</div> -->
+
+
+<div class="section">
+  <div class="card segment login">
+    <div class="card-block">
+      <h3 class="card-title">LOGIN</h3>
+      <div class="card-text">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+          <section class="form-block">
+            <input class="input" type="text" name="email" placeholder="E-mail address" formControlName="email">
+          </section>
+          <section class="form-block">
+            <input class="input" type="password" name="password" placeholder="Password" formControlName="password">
+          </section>
+          <button type="submit" class="btn btn-primary btn-block">
+            
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>

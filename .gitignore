@@ -1,9 +1,11 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
+# /dist
 /tmp
 /out-tsc
+/releases
+/UPRIGHTNGwin32ia32
 
 
 # dependencies
@@ -33,6 +35,8 @@
 npm-debug.log
 yarn-error.log
 testem.log
+package-lock.json
+package.lock.json
 /typings
 
 # System Files

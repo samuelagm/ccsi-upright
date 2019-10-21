@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HomeComponent } from './component/home/home.component';
 import { FeaturedComponent } from './component/featured/featured.component';
@@ -7,13 +7,18 @@ import { DashboardRoutingModule } from './dashboard.routing';
 import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { PostService } from './services/post.service';
 import { HttpClientModule } from '@angular/common/http';
-import { MomentModule } from 'angular2-moment';
 import { FormsModule } from '@angular/forms';
-import {SuiModule} from 'ng2-semantic-ui';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FileDropModule } from 'ngx-file-drop';
-import { ConnectionService } from 'ng-connection-service';
-
+import { SharedModule } from '../shared/shared.module';
+import { ClarityModule } from '@clr/angular';
+import { StatsService } from './services/stats.service';
+import { ChartService } from './services/chart.service';
+import { ProductsComponent } from './component/products/products.component';
+import { OrdersComponent } from './component/orders/orders.component';
+import { SuggestionsComponent } from './component/suggestions/suggestions.component';
+import { TestimonialsComponent } from './component/testimonials/testimonials.component';
+import { UsersComponent } from './component/users/users.component';
+import { ProductsService } from './services/products.service';
 
 @NgModule({
   imports: [
@@ -21,13 +26,16 @@ import { ConnectionService } from 'ng-connection-service';
     DashboardRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MomentModule,
     FormsModule,
-    SuiModule,
-    FileDropModule
+    SharedModule,
+    ClarityModule
   ],
-  providers: [PostService, ConnectionService],
-  declarations: [HomeComponent, FeaturedComponent, PostComponent, DashboardComponent],
-  bootstrap: [DashboardComponent]
+  providers: [PostService, StatsService, ChartService, ProductsService],
+  declarations: [HomeComponent, FeaturedComponent, PostComponent, DashboardComponent, ProductsComponent, OrdersComponent, SuggestionsComponent, TestimonialsComponent, UsersComponent],
+  // bootstrap: [DashboardComponent],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA,
+    NO_ERRORS_SCHEMA
+  ]
 })
 export class DashboardModule { }

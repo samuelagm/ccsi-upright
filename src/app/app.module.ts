@@ -3,11 +3,13 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { RoutingModule } from './app.routing';
+import { AppRoutingModule } from './app.routing';
 import { BoardComponent } from './component/board/board.component';
-import { NgIf } from '@angular/common';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { LoginComponent } from './component/login/login.component';
 import { FormsModule } from '@angular/forms';
+import { ClarityModule } from '@clr/angular';
 
 @NgModule({
   declarations: [
@@ -17,9 +19,12 @@ import { FormsModule } from '@angular/forms';
   ],
   imports: [
     BrowserModule,
-    RoutingModule,
+    AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
+    FormsModule,
+    ClarityModule,
   ],
   bootstrap: [AppComponent]
 })

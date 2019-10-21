@@ -1,0 +1,165 @@
+<div class="row" *ngIf="loading">
+  <div class="col-xs-12">
+    <div class="progress loop">
+      <progress></progress>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Orders</h3>
+        <p class="card-text">
+          {{ orderData?.orders?.length || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Delivered Orders</h3>
+        <p class="card-text">
+          {{ orderData?.delivered || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Unique Products</h3>
+        <p class="card-text">
+          {{ orderData?.products || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Unique Purchasers</h3>
+        <p class="card-text">
+          {{ orderData?.purchasers || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <clr-tabs class="col-xs-12">
+      <clr-tab>
+        <button clrTabLink id="link1">ALL ORDERS</button>
+        <clr-tab-content id="content1" *clrIfActive="true">
+          <clr-datagrid id="datagrid">
+            <clr-dg-column [clrDgField]="'product.name'">Product</clr-dg-column>
+            <clr-dg-column [clrDgField]="'purchaser.name'">Purchaser</clr-dg-column>
+            <clr-dg-column [clrDgField]="'hasBeenDelivered'">Delivered</clr-dg-column>
+            <clr-dg-column [clrDgField]="'pickupLocation'">Pickup Location</clr-dg-column>
+            <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+            <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+            <clr-dg-placeholder *ngIf="loading">
+              <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+                Loading...
+              </span>
+            </clr-dg-placeholder>
+
+            <clr-dg-row style="cursor: pointer" [ngClass]="{'odd': odd, 'even': even}"
+              *clrDgItems="let order of orderData?.orders; let even=even; let odd=odd">
+              <clr-dg-cell>{{order?.product?.name | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.purchaser?.name | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.hasBeenDelivered ? 'YES' : 'NO'}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.pickupLocation || 'Unspecified' | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.createdAt | date}} {{order?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.updatedAt | date}} {{order?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink id="link1">DELIVERED ORDERS</button>
+        <clr-tab-content id="content2">
+          <clr-datagrid id="datagrid">
+            <clr-dg-column [clrDgField]="'product.name'">Product</clr-dg-column>
+            <clr-dg-column [clrDgField]="'purchaser.name'">Purchaser</clr-dg-column>
+            <clr-dg-column [clrDgField]="'hasBeenDelivered'">Delivered</clr-dg-column>
+            <clr-dg-column [clrDgField]="'pickupLocation'">Pickup Location</clr-dg-column>
+            <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+            <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+            <clr-dg-placeholder *ngIf="loading">
+              <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+                Loading...
+              </span>
+            </clr-dg-placeholder>
+
+            <clr-dg-row style="cursor: pointer" [ngClass]="{'odd': odd, 'even': even}"
+              *clrDgItems="let order of filterOrder('delivered', orderData?.orders || []); let even=even; let odd=odd">
+              <clr-dg-cell>{{order?.product?.name | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.purchaser?.name | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.hasBeenDelivered ? 'YES' : 'NO'}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.pickupLocation || 'Unspecified' | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.createdAt | date}} {{order?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.updatedAt | date}} {{order?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-row-detail *clrIfExpanded>
+                This order was delivered on {{ order?.deliveredOn | date}} {{order?.deliveredOn | date:"mediumTime"}}
+              </clr-dg-row-detail>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink id="link1">UNDELIVERED ORDERS</button>
+        <clr-tab-content id="content3">
+          <clr-datagrid id="datagrid">
+            <clr-dg-column [clrDgField]="'product.name'">Product</clr-dg-column>
+            <clr-dg-column [clrDgField]="'purchaser.name'">Purchaser</clr-dg-column>
+            <clr-dg-column [clrDgField]="'hasBeenDelivered'">Delivered</clr-dg-column>
+            <clr-dg-column [clrDgField]="'pickupLocation'">Pickup Location</clr-dg-column>
+            <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+            <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+            <clr-dg-placeholder *ngIf="loading">
+              <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+                Loading...
+              </span>
+            </clr-dg-placeholder>
+
+            <clr-dg-row style="cursor: pointer" [ngClass]="{'odd': odd, 'even': even}"
+              *clrDgItems="let order of filterOrder('undelivered', orderData?.orders || []); let even=even; let odd=odd">
+              <clr-dg-cell>{{order?.product?.name | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.purchaser?.name | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.hasBeenDelivered ? 'YES' : 'NO'}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.pickupLocation || 'Unspecified' | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.createdAt | date}} {{order?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-cell>{{order?.updatedAt | date}} {{order?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-row-detail *clrIfExpanded>
+                <button (click)="markAsDelivered(order)" type="button" class="btn btn-icon btn-primary"
+                  aria-label="settings">
+                  <clr-icon shape="edit" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                  Mark As Delivered
+                </button>
+              </clr-dg-row-detail>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+  </div>
+</div>
+<div class="fab2">
+  <clr-icon (click)="getOrders()" shape="refresh" size="20"></clr-icon>
+</div>

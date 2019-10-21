@@ -6,3 +6,11 @@
     margin-bottom: 10px;
     text-align: center;
 }
+
+
+.media-item {
+    max-width: 50;
+    max-height: 300px;
+    height: 300;
+    width: 300;
+}

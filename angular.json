@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "upright2": {
+    "uprightng": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,25 +13,25 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/upright2",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
+              "src/favicon.png",
               "src/favicon.ico",
-              "src/favicon-16x16.png",
-              "src/favicon-32x32.png",
-              "src/favicon-96x96.png",
               "src/logo.png",
               "src/assets"
             ],
             "styles": [
-              "src/styles.css",
-              "semantic/dist/semantic.min.css"
+              "node_modules/@clr/icons/clr-icons.min.css",
+              "node_modules/@clr/ui/clr-ui.min.css",
+              "src/styles.css"
             ],
             "scripts": [
-             
+              "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
+              "node_modules/@clr/icons/clr-icons.min.js"
             ]
           },
           "configurations": {
@@ -57,18 +57,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "upright2:build"
+            "browserTarget": "uprightng:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "upright2:build:production"
+              "browserTarget": "uprightng:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "upright2:build"
+            "browserTarget": "uprightng:build"
           }
         },
         "test": {
@@ -102,7 +102,7 @@
         }
       }
     },
-    "upright2-e2e": {
+    "uprightng-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -110,11 +110,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "upright2:serve"
+            "devServerTarget": "uprightng:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "upright2:serve:production"
+              "devServerTarget": "uprightng:serve:production"
             }
           }
         },
@@ -130,5 +130,5 @@
       }
     }
   },
-  "defaultProject": "upright2"
+  "defaultProject": "uprightng"
 }
