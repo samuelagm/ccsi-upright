@@ -1,0 +1,23 @@
+<clr-main-container>
+  <!-- <nav class="subnav">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link active app-title">UPRIGHT DASHBOARD</a>
+      </li>
+    </ul>
+    <div class="header-actions">
+      <a style="margin-right: 1.5em; color: #39B34A" class="nav-text">
+        {{service?.email}}
+      </a>
+    </div>
+  </nav> -->
+  <div class="content-container">
+    <main class="content-area">
+      <ng-content select=".main"></ng-content>
+      <div class="fab">
+        <clr-icon (click)="service.logoutUser()" shape="power" size="20"></clr-icon>
+      </div>
+    </main>
+    <ng-content select=".aside"></ng-content>
+  </div>
+</clr-main-container>

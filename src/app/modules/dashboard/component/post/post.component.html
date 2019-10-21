@@ -1,0 +1,438 @@
+<ng-container>
+  <div class="row" *ngIf="loading && !postCreate">
+    <div class="col-xs-12">
+      <div class="progress loop">
+        <progress></progress>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="card segment">
+        <div class="card-block">
+          <h3 class="card-title">POSTS</h3>
+          <div class="card-text">
+            {{postData?.posts?.length || 0 | number}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="card segment">
+        <div class="card-block">
+          <h3 class="card-title">PUBLISHED POSTS</h3>
+          <div class="card-text">
+            {{postData?.published < 0 ? 0 : postData?.published || 0 | number}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="card segment">
+        <div class="card-block">
+          <h3 class="card-title">FLAGGED POSTS</h3>
+          <div class="card-text">
+            {{postData?.flagged < 0 ? 0 : postData?.flagged || 0 | number}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-6 col-lg-3">
+      <div class="card segment">
+        <div class="card-block">
+          <h3 class="card-title">PENDING POSTS</h3>
+          <div #perc class="card-text">
+            {{ postData?.pending < 0 ? 0 : postData?.pending || 0 | number}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card login">
+    <div class="card-block">
+      <h3 class="card-title">Post Stats</h3>
+      <div class="card-text">
+        <div class="row">
+          <div appChart id="chart1" class="col-xs-12 col-lg-6"></div>
+          <div appChart id="chart2" class="col-xs-12 col-lg-6"></div>
+        </div>
+        <div class="row">
+          <div appChart id="chart3" class="col-xs-12 col-lg-6"></div>
+          <div appChart id="chart4" class="col-xs-12 col-lg-6"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <clr-tabs class="col-xs-12">
+      <clr-tab>
+        <button clrTabLink id="link1">ALL POSTS</button>
+        <clr-tab-content id="content1" *clrIfActive="true">
+          <clr-datagrid id="datagrid">
+            <clr-dg-column [clrDgField]="'title'">Title</clr-dg-column>
+            <clr-dg-column [clrDgField]="'image'">Media Type</clr-dg-column>
+            <clr-dg-column [clrDgField]="'loc'">Author Location</clr-dg-column>
+            <clr-dg-column [clrDgField]="'from_twitter'">Source</clr-dg-column>
+            <clr-dg-column [clrDgField]="'anonymous'">Anonymous</clr-dg-column>
+            <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+            <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+            <clr-dg-placeholder *ngIf="loading">
+              <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+                Loading...
+              </span>
+            </clr-dg-placeholder>
+
+            <clr-dg-row style="cursor: pointer" [ngClass]="{'odd': odd, 'even': even}"
+              *clrDgItems="let post of postData?.posts; let even=even; let odd=odd">
+              <clr-dg-cell>{{post?.title | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.image?.endsWith('mp4') ? 'Video' : post?.image?.endsWith('m4a') ? 'Audio': 'Image'}}
+              </clr-dg-cell>
+              <clr-dg-cell>{{post?.loc | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.from_twitter ? 'Twitter' : 'Mobile App'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.anonymous ? 'Yes' : 'No'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.createdAt | date}} {{post?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.updatedAt | date}} {{post?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+
+              <clr-dg-row-detail *clrIfExpanded>
+                <div>
+                  <div class="row">
+                    <div class="col-xs-12 btn-group">
+                      <button (click)="updatePost(post, 'pub')" *ngIf="!post?.approved && !post?.flagged" type="button"
+                        class="btn btn-icon btn-success" aria-label="home">
+                        <clr-icon shape="share" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Publish
+                      </button>
+                      <button (click)="updatePost(post, 'flag')" *ngIf="post?.approved && !post?.flagged" type="button"
+                        class="btn btn-icon btn-primary" aria-label="home">
+                        <clr-icon shape="eye-hide" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Flag
+                      </button>
+                      <button (click)="updatePost(post, 'unflag')" *ngIf="post?.flagged" type="button"
+                        class="btn btn-icon btn-primary" aria-label="home">
+                        <clr-icon shape="eye" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Unflag
+                      </button>
+                      <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning"
+                        aria-label="settings">
+                        <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
+                      <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('m4a')">
+                      </audio>
+                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('mp4')">
+                      </video>
+                    </div>
+                    <div class="col-xs-8 txt txt-justify">
+                      {{post?.body}}
+                    </div>
+                  </div>
+                </div>
+              </clr-dg-row-detail>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink id="link1">PUBLISHED POSTS</button>
+        <clr-tab-content id="content2">
+          <clr-datagrid id="datagrid">
+            <clr-dg-column [clrDgField]="'title'">Title</clr-dg-column>
+            <clr-dg-column [clrDgField]="'image'">Media Type</clr-dg-column>
+            <clr-dg-column [clrDgField]="'loc'">Author Location</clr-dg-column>
+            <clr-dg-column [clrDgField]="'from_twitter'">Source</clr-dg-column>
+            <clr-dg-column [clrDgField]="'anonymous'">Anonymous</clr-dg-column>
+            <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+            <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+            <clr-dg-placeholder *ngIf="loading">
+              <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+                Loading...
+              </span>
+            </clr-dg-placeholder>
+
+            <clr-dg-row [ngClass]="{'odd': odd, 'even': even}" style="cursor: pointer"
+              *clrDgItems="let post of filterPosts('pub', postData?.posts || []); let even=even; let odd=odd">
+              <clr-dg-cell>{{post?.title | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.image?.endsWith('mp4') ? 'Video' : post?.image?.endsWith('m4a') ? 'Audio': 'Image'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.loc | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.from_twitter ? 'Twitter' : 'Mobile App'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.anonymous ? 'Yes' : 'No'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.createdAt | date}} {{post?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.updatedAt | date}} {{post?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-row-detail *clrIfExpanded>
+                <div>
+                  <div class="row">
+                    <div class="col-xs-12 btn-group">
+                        <button (click)="updatePost(post, 'flag')" *ngIf="post?.approved && !post?.flagged" type="button" class="btn btn-icon btn-primary" aria-label="home">
+                            <clr-icon shape="eye-hide" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                            Flag
+                        </button>
+                        <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning" aria-label="settings">
+                            <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                            Delete
+                        </button>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
+                      <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('m4a')">
+                      </audio>
+                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('mp4')">
+                      </video>
+                    </div>
+                    <div class="col-xs-8 txt txt-justify">
+                      {{post?.body}}
+                    </div>
+                  </div>
+                </div>
+              </clr-dg-row-detail>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink id="link2">PENDING POSTS</button>
+        <clr-tab-content id="content3">
+          <clr-datagrid id="datagrid">
+            <clr-dg-column [clrDgField]="'title'">Title</clr-dg-column>
+            <clr-dg-column [clrDgField]="'image'">Media Type</clr-dg-column>
+            <clr-dg-column [clrDgField]="'loc'">Author Location</clr-dg-column>
+            <clr-dg-column [clrDgField]="'from_twitter'">Source</clr-dg-column>
+            <clr-dg-column [clrDgField]="'anonymous'">Anonymous</clr-dg-column>
+            <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+            <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+            <clr-dg-placeholder *ngIf="loading">
+              <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+                Loading...
+              </span>
+            </clr-dg-placeholder>
+
+            <clr-dg-row [ngClass]="{'odd': odd, 'even': even}" style="cursor: pointer"
+              *clrDgItems="let post of filterPosts('pend', postData?.posts || []); let even=even; let odd=odd">
+              <clr-dg-cell>{{post?.title | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.image?.endsWith('mp4') ? 'Video' : post?.image?.endsWith('m4a') ? 'Audio': 'Image'}}
+              </clr-dg-cell>
+              <clr-dg-cell>{{post?.loc | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.from_twitter ? 'Twitter' : 'Mobile App'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.anonymous ? 'Yes' : 'No'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.createdAt | date}} {{post?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.updatedAt | date}} {{post?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-row-detail *clrIfExpanded>
+                <div>
+                  <div class="row">
+                    <div class="col-xs-12 btn-group">
+                        <button (click)="updatePost(post, 'pub')" *ngIf="!post?.approved && !post?.flagged" type="button" class="btn btn-icon btn-success" aria-label="home">
+                            <clr-icon shape="share" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                            Publish
+                        </button>
+                        <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning" aria-label="settings">
+                            <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                            Delete
+                        </button>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
+                      <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('m4a')">
+                      </audio>
+                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('mp4')">
+                      </video>
+                    </div>
+                    <div class="col-xs-8 txt txt-justify">
+                      {{post?.body}}
+                    </div>
+                  </div>
+                </div>
+              </clr-dg-row-detail>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+      <clr-tab>
+        <button clrTabLink id="link2">FLAGGED POSTS</button>
+        <clr-tab-content id="content4">
+          <clr-datagrid id="datagrid">
+            <clr-dg-column [clrDgField]="'title'">Title</clr-dg-column>
+            <clr-dg-column [clrDgField]="'image'">Media Type</clr-dg-column>
+            <clr-dg-column [clrDgField]="'loc'">Author Location</clr-dg-column>
+            <clr-dg-column [clrDgField]="'from_twitter'">Source</clr-dg-column>
+            <clr-dg-column [clrDgField]="'anonymous'">Anonymous</clr-dg-column>
+            <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+            <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+            <clr-dg-placeholder *ngIf="loading">
+              <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+                Loading...
+              </span>
+            </clr-dg-placeholder>
+
+            <clr-dg-row [ngClass]="{'odd': odd, 'even': even}" style="cursor: pointer"
+              *clrDgItems="let post of filterPosts('flag', postData?.posts || []); let even=even; let odd=odd">
+              <clr-dg-cell>{{post?.title | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.image?.endsWith('mp4') ? 'Video' : post?.image?.endsWith('m4a') ? 'Audio': 'Image'}}
+              </clr-dg-cell>
+              <clr-dg-cell>{{post?.loc | titlecase}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.from_twitter ? 'Twitter' : 'Mobile App'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.anonymous ? 'Yes' : 'No'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.createdAt | date}} {{post?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.updatedAt | date}} {{post?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+              <clr-dg-row-detail *clrIfExpanded>
+                <div>
+                  <div class="row">
+                    <div class="col-xs-12 btn-group">
+                        <button (click)="updatePost(post, 'unflag')" *ngIf="post?.flagged" type="button" class="btn btn-icon btn-primary" aria-label="home">
+                            <clr-icon shape="eye" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                            Unflag
+                        </button>
+                        <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning" aria-label="settings">
+                            <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                            Delete
+                        </button>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
+                      <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('m4a')">
+                      </audio>
+                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('mp4')">
+                      </video>
+                    </div>
+                    <div class="col-xs-8 txt txt-justify">
+                      {{post?.body}}
+                    </div>
+                  </div>
+                </div>
+              </clr-dg-row-detail>
+            </clr-dg-row>
+            <clr-dg-footer>
+              <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+            </clr-dg-footer>
+          </clr-datagrid>
+        </clr-tab-content>
+      </clr-tab>
+    </clr-tabs>
+  </div>
+
+  <div class="fab2">
+    <clr-icon (click)="toggleCreateState()" shape="add" size="20"></clr-icon>
+  </div>
+  <div class="fab3">
+    <clr-icon (click)="loadPosts()" shape="refresh" size="20"></clr-icon>
+  </div>
+</ng-container>
+
+<clr-modal [(clrModalOpen)]="postCreate" [clrModalStaticBackdrop]="true" [clrModalClosable]="false"
+  [clrModalSize]="'md'">
+  <div class="modal-title">
+    <div class="title">
+      <b>Post Creation Form</b>
+    </div>
+    <div class="actions">
+      <clr-icon (click)="toggleCreateState()" shape="window-min" size="25"></clr-icon>
+      <clr-icon (click)="closeModal(); file = null" class="cls" shape="window-close" size="25">
+      </clr-icon>
+    </div>
+  </div>
+  <div class="modal-body">
+    <div class="row" *ngIf="loading">
+      <div class="col-xs-12">
+        <div class="progress loop">
+          <progress></progress>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid" *ngIf="isOnline == false">
+      <div class="eleven wide column">
+        <h2>
+          You're offline, please check your internet settings.
+        </h2>
+
+      </div>
+      <div class="column"></div>
+    </div>
+
+    <div class="container-fluid" *ngIf="isOnline == true">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="card drop-area">
+            <div class="card-block">
+              <p class="card-title">
+                Click To Add or Change Media
+              </p>
+            </div>
+          </div>
+          <br *ngIf="file">
+          <div class="row media-container" *ngIf="file">
+            <div class="col-xs-12">
+              <img style="width: 100%;" [src]="file?.url" [alt]="file?.name" *ngIf="file.type === 'image'">
+              <audio style="width: 100%;" controls [src]="file?.url" [alt]="file?.name" *ngIf="file.type === 'audio'">
+              </audio>
+              <video style="width: inherit" controls [src]="file?.url" [alt]="file?.name" *ngIf="file.type === 'video'">
+              </video>
+            </div>
+          </div>
+          <br>
+          <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="form">
+            <section class="form-block">
+              <input class="input" type="text" formControlName="title" placeholder="title">
+              <div class="ui corner label red"
+                *ngIf="postForm.get('content').dirty == true && postForm.get('title').status == 'INVALID'">
+              </div>
+            </section>
+            <section class="form-block">
+              <input class="input" formControlName="links" placeholder="comma seperated list of links">
+            </section>
+            <section class="form-block">
+              <textarea class="input-long" rows="3" formControlName="content" placeholder="Content"></textarea>
+            </section>
+            <button [disabled]="loading || postForm?.invalid" type="submit" class="btn btn-primary btn-block">
+              <span *ngIf="loading" class="spinner spinner-inverse spinner-sm">
+                Posting...
+              </span>
+              Add Post
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="column">
+      </div>
+    </div>
+  </div>
+</clr-modal>

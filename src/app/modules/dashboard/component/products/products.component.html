@@ -1,0 +1,162 @@
+<div class="row" *ngIf="loading && !productCreate">
+  <div class="col-xs-12">
+    <div class="progress loop">
+      <progress></progress>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Products</h3>
+        <p class="card-text">
+          {{ productData?.products?.length || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Orders</h3>
+        <p class="card-text">
+          {{ productData?.orders || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Max Product Order</h3>
+        <p class="card-text">
+          {{ productData?.maxOrders || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card">
+      <div class="card-block">
+        <h3 class="card-title">Average Product Orders</h3>
+        <p class="card-text">
+          {{ productData?.avgOrders || 0 | number }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <clr-datagrid id="datagrid">
+      <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'points'">Points</clr-dg-column>
+      <clr-dg-column [clrDgField]="'rating'">Rating</clr-dg-column>
+      <clr-dg-column [clrDgField]="'order'">Orders</clr-dg-column>
+      <clr-dg-column [clrDgField]="'delivery'">Delivery Duration</clr-dg-column>
+      <clr-dg-column [clrDgField]="'createdAt'">Created</clr-dg-column>
+      <clr-dg-column [clrDgField]="'updatedAt'">Modified</clr-dg-column>
+
+      <clr-dg-placeholder *ngIf="loading">
+        <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+          Loading...
+        </span>
+      </clr-dg-placeholder>
+
+      <clr-dg-row (click)="toggleCreateState('edit', product)" style="cursor: pointer"
+        [ngClass]="{'odd': odd, 'even': even}"
+        *clrDgItems="let product of productData?.products; let even=even; let odd=odd">
+        <clr-dg-cell>{{product?.name | titlecase}}</clr-dg-cell>
+        <clr-dg-cell>{{product?.points | number}} Points
+        </clr-dg-cell>
+        <clr-dg-cell>{{product?.rating | number}} Stars</clr-dg-cell>
+        <clr-dg-cell>{{product?.order | number}}</clr-dg-cell>
+        <clr-dg-cell>{{product?.delivery | titlecase}}</clr-dg-cell>
+        <clr-dg-cell>{{product?.createdAt | date}} {{product?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+        <clr-dg-cell>{{product?.updatedAt | date}} {{product?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+      </clr-dg-row>
+      <clr-dg-footer>
+        <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </div>
+</div>
+<div class="fab2">
+  <clr-icon (click)="toggleCreateState('create')" shape="add" size="20"></clr-icon>
+</div>
+<div class="fab3">
+  <clr-icon (click)="getProducts()" shape="refresh" size="20"></clr-icon>
+</div>
+<clr-modal [(clrModalOpen)]="productCreate" [clrModalStaticBackdrop]="true" [clrModalClosable]="false"
+  [clrModalSize]="'md'">
+  <div class="modal-title">
+    <div class="title">
+      <b>Post {{ state === 'edit' ? 'Modification' : 'Creation' }} Form</b>
+    </div>
+    <div class="actions">
+      <clr-icon (click)="toggleCreateState('default')" shape="window-min" size="25"></clr-icon>
+      <clr-icon (click)="closeModal();" class="cls" shape="window-close" size="25">
+      </clr-icon>
+    </div>
+  </div>
+  <div class="modal-body" style="position: relative">
+    <div class="row" *ngIf="loading">
+      <div class="col-xs-12">
+        <div class="progress loop">
+          <progress></progress>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="card drop-area">
+            <div class="card-block">
+              <p class="card-title">
+                Click To Add or Change Media
+              </p>
+            </div>
+          </div>
+          <br *ngIf="productForm?.controls?.image?.value">
+          <div class="row media-container" *ngIf="productForm?.controls?.image?.value">
+            <div class="col-xs-12">
+              <img class="img img-responsive" style="width: 100%;" [src]="productForm?.controls?.image?.value"
+                [alt]="selectedProduct?.name">
+            </div>
+          </div>
+          <br>
+          <form [formGroup]="productForm" class="form">
+            <section class="form-block">
+              <input class="input" type="text" formControlName="name" placeholder="product name">
+            </section>
+            <section class="form-block">
+              <input class="input" formControlName="rating" type="number" min="0" max="5" placeholder="product rating">
+            </section>
+            <section class="form-block">
+              <input class="input" formControlName="points" type="number" min="0" placeholder="product points">
+            </section>
+            <section class="form-block">
+              <input class="input" formControlName="delivery" type="text"
+                placeholder="product estimated delivery duration">
+            </section>
+            <button (click)="onSubmit()" [disabled]="loading || productForm?.invalid" type="submit"
+              class="btn btn-primary btn-block">
+              <span *ngIf="loading" class="spinner spinner-inverse spinner-sm">
+                Posting...
+              </span>
+              {{ state === 'edit' ? 'Modify' : 'Create' }} Product
+            </button>
+            <button [disabled]="loading" *ngIf="state === 'edit'" (click)="delProduct()"
+              class="btn btn-danger btn-block">
+              Delete Product
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="column">
+      </div>
+    </div>
+  </div>
+</clr-modal>
