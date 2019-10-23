@@ -19,10 +19,10 @@ export class ChartService {
       type: isBar ? 'bar' : 'line',
       height: 300,
       axisOptions: {
-        xIsSeries: true // default: false
+        xIsSeries: true
     },
     lineOptions: {
-      hideDots: 1 // default: 0
+      hideDots: 1
   },
       data: {
         labels: labels || [],

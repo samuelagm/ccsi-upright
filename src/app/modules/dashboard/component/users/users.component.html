@@ -1,6 +1,202 @@
-<!-- <div class="fab2">
-  <clr-icon (click)="toggleCreateState()" shape="add" size="20"></clr-icon>
+<div class="row" *ngIf="loading">
+  <div class="col-xs-12">
+    <div class="progress loop">
+      <progress></progress>
+    </div>
+  </div>
 </div>
-<div class="fab3">
-  <clr-icon (click)="loadPosts()" shape="refresh" size="20"></clr-icon>
-</div> -->
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">USERS</h3>
+        <div class="card-text">
+          {{userData?.users?.length || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">MEMBERS</h3>
+        <div class="card-text">
+          {{userData?.members || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">AVG POSTS</h3>
+        <div class="card-text">
+          {{userData?.avgPosts || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">FEMALE</h3>
+        <div #perc class="card-text">
+          {{ userData?.female || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">TOTAL POINTS</h3>
+        <div class="card-text">
+          {{userData?.points || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">AVG POINTS</h3>
+        <div class="card-text">
+          {{userData?.avgPoints || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">MIN POSTS</h3>
+        <div class="card-text">
+          {{userData?.minPosts || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">MALE</h3>
+        <div #perc class="card-text">
+          {{ userData?.male || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">MAX POINTS</h3>
+        <div class="card-text">
+          {{userData?.maxPoints || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">MIN POINTS</h3>
+        <div class="card-text">
+          {{userData?.minPoints || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">MAX POSTS</h3>
+        <div class="card-text">
+          {{userData?.maxPosts || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-3">
+    <div class="card segment">
+      <div class="card-block">
+        <h3 class="card-title">OTHER GENDERS</h3>
+        <div #perc class="card-text">
+          {{ userData?.other || 0 | number}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <clr-datagrid id="datagrid">
+      <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'usermame'">User Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'points'">Points</clr-dg-column>
+      <clr-dg-column [clrDgField]="'postCount'">Posts</clr-dg-column>
+      <clr-dg-column [clrDgField]="'isMember'">Member</clr-dg-column>
+      <clr-dg-column [clrDgField]="'createdAt'">Account Created</clr-dg-column>
+      <clr-dg-column [clrDgField]="'updatedAt'">Last Updated</clr-dg-column>
+
+      <clr-dg-placeholder *ngIf="loading">
+        <span *ngIf="loading" class="spinner spinner-sm spinner-inline">
+          Loading...
+        </span>
+      </clr-dg-placeholder>
+
+      <clr-dg-row style="cursor: pointer" [ngClass]="{'odd': odd, 'even': even}"
+        *clrDgItems="let user of userData?.users; let even=even; let odd=odd">
+        <clr-dg-cell>{{user?.name | titlecase}}</clr-dg-cell>
+        <clr-dg-cell>{{user?.username}}</clr-dg-cell>
+        <clr-dg-cell>{{user?.points || 0 | number}}</clr-dg-cell>
+        <clr-dg-cell>{{user?.postCount || 0 | number}}</clr-dg-cell>
+        <clr-dg-cell>{{user?.isMember ? 'Yes' : 'No'}}</clr-dg-cell>
+        <clr-dg-cell>{{user?.createdAt | date}} {{user?.createdAt | date:"mediumTime"}}</clr-dg-cell>
+        <clr-dg-cell>{{user?.updatedAt | date}} {{user?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded>
+          <div class="container">
+            <div class="col-xs-12">
+              <clr-stack-view style="width: 100% !important;">
+                <clr-stack-block>
+                  <clr-stack-label>Gender</clr-stack-label>
+                  <clr-stack-content>{{ user?.gender || "unspecified" | titlecase }}</clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>Telephone</clr-stack-label>
+                  <clr-stack-content><a href="tel:{{user?.telephone}}">{{user?.telephone}}</a></clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>Email</clr-stack-label>
+                  <clr-stack-content><a href="mailto:{{user?.email}}">{{user?.email}}</a></clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>City</clr-stack-label>
+                  <clr-stack-content>{{ user?.city | titlecase }}</clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>State</clr-stack-label>
+                  <clr-stack-content>{{ user?.state | titlecase }}</clr-stack-content>
+                </clr-stack-block>
+                <clr-stack-block>
+                  <clr-stack-label>Country</clr-stack-label>
+                  <clr-stack-content>{{ user?.country | titlecase }}</clr-stack-content>
+                </clr-stack-block>
+              </clr-stack-view>
+            </div>
+          </div>
+        </clr-dg-row-detail>
+      </clr-dg-row>
+      <clr-dg-footer>
+        <clr-dg-pagination [clrDgPageSize]="50"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  </div>
+</div>
+<div class="fab2">
+  <clr-icon (click)="getUsers()" shape="refresh" size="20"></clr-icon>
+</div>

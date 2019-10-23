@@ -73,4 +73,16 @@ export class ProductsService {
   deleteTestimonial(id) {
     return this.http.delete(`${this.url}/testimonial/${id}`);
   }
+
+  getUsers() {
+    return this.http.get(`${this.url}/user/usersAndStats`).pipe(map(data => JSON.parse(JSON.stringify(data))));
+  }
+
+  updateUsers(id, update) {
+    return this.http.put(`${this.url}/user/${id}`, update);
+  }
+
+  deleteUser(id) {
+    return this.http.delete(`${this.url}/user/${id}`);
+  }
 }
