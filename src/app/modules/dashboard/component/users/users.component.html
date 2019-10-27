@@ -160,33 +160,38 @@
         <clr-dg-cell>{{user?.updatedAt | date}} {{user?.updatedAt | date:"mediumTime"}}</clr-dg-cell>
         <clr-dg-row-detail *clrIfExpanded>
           <div class="container">
-            <div class="col-xs-12">
-              <clr-stack-view style="width: 100% !important;">
-                <clr-stack-block>
-                  <clr-stack-label>Gender</clr-stack-label>
-                  <clr-stack-content>{{ user?.gender || "unspecified" | titlecase }}</clr-stack-content>
-                </clr-stack-block>
-                <clr-stack-block>
-                  <clr-stack-label>Telephone</clr-stack-label>
-                  <clr-stack-content><a href="tel:{{user?.telephone}}">{{user?.telephone}}</a></clr-stack-content>
-                </clr-stack-block>
-                <clr-stack-block>
-                  <clr-stack-label>Email</clr-stack-label>
-                  <clr-stack-content><a href="mailto:{{user?.email}}">{{user?.email}}</a></clr-stack-content>
-                </clr-stack-block>
-                <clr-stack-block>
-                  <clr-stack-label>City</clr-stack-label>
-                  <clr-stack-content>{{ user?.city | titlecase }}</clr-stack-content>
-                </clr-stack-block>
-                <clr-stack-block>
-                  <clr-stack-label>State</clr-stack-label>
-                  <clr-stack-content>{{ user?.state | titlecase }}</clr-stack-content>
-                </clr-stack-block>
-                <clr-stack-block>
-                  <clr-stack-label>Country</clr-stack-label>
-                  <clr-stack-content>{{ user?.country | titlecase }}</clr-stack-content>
-                </clr-stack-block>
-              </clr-stack-view>
+            <div class="row">
+              <div class="col-xs-12 col-md-2">
+                <img class="img-fluid float-right" style="width: 100%;" [src]="user?.avatar" [alt]="user?.name">
+              </div>
+              <div class="col-xs-12 col-md-10">
+                <clr-stack-view style="width: 100% !important;">
+                  <clr-stack-block>
+                    <clr-stack-label>Gender</clr-stack-label>
+                    <clr-stack-content>{{ user?.gender || "unspecified" | titlecase }}</clr-stack-content>
+                  </clr-stack-block>
+                  <clr-stack-block>
+                    <clr-stack-label>Telephone</clr-stack-label>
+                    <clr-stack-content><a href="tel:{{user?.telephone}}">{{user?.telephone}}</a></clr-stack-content>
+                  </clr-stack-block>
+                  <clr-stack-block>
+                    <clr-stack-label>Email</clr-stack-label>
+                    <clr-stack-content><a href="mailto:{{user?.email}}">{{user?.email}}</a></clr-stack-content>
+                  </clr-stack-block>
+                  <clr-stack-block>
+                    <clr-stack-label>City</clr-stack-label>
+                    <clr-stack-content>{{ user?.city | titlecase }}</clr-stack-content>
+                  </clr-stack-block>
+                  <clr-stack-block>
+                    <clr-stack-label>State</clr-stack-label>
+                    <clr-stack-content>{{ user?.state | titlecase }}</clr-stack-content>
+                  </clr-stack-block>
+                  <clr-stack-block>
+                    <clr-stack-label>Country</clr-stack-label>
+                    <clr-stack-content>{{ user?.country | titlecase }}</clr-stack-content>
+                  </clr-stack-block>
+                </clr-stack-view>
+              </div>
             </div>
           </div>
         </clr-dg-row-detail>

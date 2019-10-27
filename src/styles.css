@@ -75,6 +75,11 @@ button:focus {
   /* color: #FFF !important; */
 }
 
+p.body {
+  /* font-size: 1.1rem; */
+  text-align: justify;
+}
+
 input[type="date"]:not([readonly]),
 input[type="datetime-local"]:not([readonly]),
 input[type="email"]:not([readonly]),
