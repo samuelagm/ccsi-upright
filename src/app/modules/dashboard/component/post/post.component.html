@@ -99,6 +99,22 @@
               <clr-dg-row-detail *clrIfExpanded>
                 <div>
                   <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                      <img class="img-fluid float-right" style="width: 100%;" [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
+                      <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('m4a')">
+                      </audio>
+                      <video style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                        *ngIf="post?.image?.endsWith('mp4')">
+                      </video>
+                    </div>
+                    <div class="col-xs-12 col-md-8 txt txt-justify">
+                      <p class="body">{{post?.body}}</p>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
                     <div class="col-xs-12 btn-group">
                       <button (click)="updatePost(post, 'pub')" *ngIf="!post?.approved && !post?.flagged" type="button"
                         class="btn btn-icon btn-success" aria-label="home">
@@ -120,22 +136,6 @@
                         <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
                         Delete
                       </button>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
-                        *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
-                      <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
-                        *ngIf="post?.image?.endsWith('m4a')">
-                      </audio>
-                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
-                        *ngIf="post?.image?.endsWith('mp4')">
-                      </video>
-                    </div>
-                    <div class="col-xs-8 txt txt-justify">
-                      {{post?.body}}
                     </div>
                   </div>
                 </div>
@@ -168,7 +168,8 @@
             <clr-dg-row [ngClass]="{'odd': odd, 'even': even}" style="cursor: pointer"
               *clrDgItems="let post of filterPosts('pub', postData?.posts || []); let even=even; let odd=odd">
               <clr-dg-cell>{{post?.title | titlecase}}</clr-dg-cell>
-              <clr-dg-cell>{{post?.image?.endsWith('mp4') ? 'Video' : post?.image?.endsWith('m4a') ? 'Audio': 'Image'}}</clr-dg-cell>
+              <clr-dg-cell>{{post?.image?.endsWith('mp4') ? 'Video' : post?.image?.endsWith('m4a') ? 'Audio': 'Image'}}
+              </clr-dg-cell>
               <clr-dg-cell>{{post?.loc | titlecase}}</clr-dg-cell>
               <clr-dg-cell>{{post?.from_twitter ? 'Twitter' : 'Mobile App'}}</clr-dg-cell>
               <clr-dg-cell>{{post?.anonymous ? 'Yes' : 'No'}}</clr-dg-cell>
@@ -177,31 +178,33 @@
               <clr-dg-row-detail *clrIfExpanded>
                 <div>
                   <div class="row">
+                    <div class="row">
+                      <div class="col-xs-12 col-md-4">
+                        <img class="img-fluid float-right" style="width: 100%;" [src]="post?.image" [alt]="post?.title"
+                          *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
+                        <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                          *ngIf="post?.image?.endsWith('m4a')">
+                        </audio>
+                        <video style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
+                          *ngIf="post?.image?.endsWith('mp4')">
+                        </video>
+                      </div>
+                      <div class="col-xs-12 col-md-8 txt txt-justify">
+                        <p class="body">{{post?.body}}</p>
+                      </div>
+                    </div>
+                    <br>
                     <div class="col-xs-12 btn-group">
-                        <button (click)="updatePost(post, 'flag')" *ngIf="post?.approved && !post?.flagged" type="button" class="btn btn-icon btn-primary" aria-label="home">
-                            <clr-icon shape="eye-hide" class="is-solid" style="fill: #FFF !important"></clr-icon>
-                            Flag
-                        </button>
-                        <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning" aria-label="settings">
-                            <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
-                            Delete
-                        </button>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
-                        *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
-                      <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
-                        *ngIf="post?.image?.endsWith('m4a')">
-                      </audio>
-                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
-                        *ngIf="post?.image?.endsWith('mp4')">
-                      </video>
-                    </div>
-                    <div class="col-xs-8 txt txt-justify">
-                      {{post?.body}}
+                      <button (click)="updatePost(post, 'flag')" *ngIf="post?.approved && !post?.flagged" type="button"
+                        class="btn btn-icon btn-primary" aria-label="home">
+                        <clr-icon shape="eye-hide" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Flag
+                      </button>
+                      <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning"
+                        aria-label="settings">
+                        <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -244,31 +247,33 @@
               <clr-dg-row-detail *clrIfExpanded>
                 <div>
                   <div class="row">
-                    <div class="col-xs-12 btn-group">
-                        <button (click)="updatePost(post, 'pub')" *ngIf="!post?.approved && !post?.flagged" type="button" class="btn btn-icon btn-success" aria-label="home">
-                            <clr-icon shape="share" class="is-solid" style="fill: #FFF !important"></clr-icon>
-                            Publish
-                        </button>
-                        <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning" aria-label="settings">
-                            <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
-                            Delete
-                        </button>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
+                    <div class="col-xs-12 col-md-4">
+                      <img class="img-fluid float-right" style="width: 100%;" [src]="post?.image" [alt]="post?.title"
                         *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
                       <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
                         *ngIf="post?.image?.endsWith('m4a')">
                       </audio>
-                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
+                      <video style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
                         *ngIf="post?.image?.endsWith('mp4')">
                       </video>
                     </div>
-                    <div class="col-xs-8 txt txt-justify">
-                      {{post?.body}}
+                    <div class="col-xs-12 col-md-8 txt txt-justify">
+                      <p class="body">{{post?.body}}</p>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-xs-12 btn-group">
+                      <button (click)="updatePost(post, 'pub')" *ngIf="!post?.approved && !post?.flagged" type="button"
+                        class="btn btn-icon btn-success" aria-label="home">
+                        <clr-icon shape="share" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Publish
+                      </button>
+                      <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning"
+                        aria-label="settings">
+                        <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -311,31 +316,33 @@
               <clr-dg-row-detail *clrIfExpanded>
                 <div>
                   <div class="row">
-                    <div class="col-xs-12 btn-group">
-                        <button (click)="updatePost(post, 'unflag')" *ngIf="post?.flagged" type="button" class="btn btn-icon btn-primary" aria-label="home">
-                            <clr-icon shape="eye" class="is-solid" style="fill: #FFF !important"></clr-icon>
-                            Unflag
-                        </button>
-                        <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning" aria-label="settings">
-                            <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
-                            Delete
-                        </button>
-                    </div>
-                  </div>
-                  <br>
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <img style="width: 100%; height: 100px;" [src]="post?.image" [alt]="post?.title"
+                    <div class="col-xs-12 col-md-4">
+                      <img class="img-fluid float-right" style="width: 100%;" [src]="post?.image" [alt]="post?.title"
                         *ngIf="post?.image?.endsWith('jpg') || post?.image?.endsWith('png')">
                       <audio style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
                         *ngIf="post?.image?.endsWith('m4a')">
                       </audio>
-                      <video style="width: 100%; height: 200px;" controls [src]="post?.image" [alt]="post?.title"
+                      <video style="width: 100%;" controls [src]="post?.image" [alt]="post?.title"
                         *ngIf="post?.image?.endsWith('mp4')">
                       </video>
                     </div>
-                    <div class="col-xs-8 txt txt-justify">
-                      {{post?.body}}
+                    <div class="col-xs-12 col-md-8 txt txt-justify">
+                      <p class="body">{{post?.body}}</p>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-xs-12 btn-group">
+                      <button (click)="updatePost(post, 'unflag')" *ngIf="post?.flagged" type="button"
+                        class="btn btn-icon btn-primary" aria-label="home">
+                        <clr-icon shape="eye" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Unflag
+                      </button>
+                      <button (click)="updatePost(post, 'del')" type="button" class="btn btn-icon btn-warning"
+                        aria-label="settings">
+                        <clr-icon shape="trash" class="is-solid" style="fill: #FFF !important"></clr-icon>
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>
