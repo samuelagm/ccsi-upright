@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  API: '//localhost:1337'
+  API: '//uprightapi.cloud'
 };
 
 /*

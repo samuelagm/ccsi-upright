@@ -74,6 +74,10 @@ export class ProductsService {
     return this.http.delete(`${this.url}/testimonial/${id}`);
   }
 
+  login() {
+    return this.http.get(`${this.url}/user/login?username=uprightNG&password=1574243518820::MTU3NDI0MzUxODgyMA==`).pipe(map(data => JSON.parse(JSON.stringify(data))));
+  }
+
   getUsers() {
     return this.http.get(`${this.url}/user/usersAndStats`).pipe(map(data => JSON.parse(JSON.stringify(data))));
   }

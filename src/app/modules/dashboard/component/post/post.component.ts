@@ -58,7 +58,6 @@ export class PostComponent implements OnInit {
     private chartService: ChartService
   ) {
     this.loading = true;
-    this.ccsiUserId = environment.production ? "5ba2088fa8d27d0014960921" : "5dac58ed841c86567860486d";
   }
 
   closeModal() {
@@ -77,7 +76,7 @@ export class PostComponent implements OnInit {
       const post = {
         title: title,
         body: content,
-        author: this.ccsiUserId,
+        author: this.ccsiUserId.id,
         links: links.split(","),
         long: 7.4348875,
         lat: 9.0694323,
@@ -276,11 +275,13 @@ export class PostComponent implements OnInit {
   ngOnInit() {
     window.addEventListener("online", e => (this.isOnline = true));
     window.addEventListener("offline", e => (this.isOnline = false));
+    this.ccsiUserId = this.postService.getActiveUser();
+    console.log(this.ccsiUserId)
 
     this.postForm = this.formBuilder.group({
       title: ["", Validators.required],
       content: ["", Validators.required],
-      links: ["", Validators.required]
+      links: [""]
     });
 
     this.loadPosts();
